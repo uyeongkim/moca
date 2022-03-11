@@ -10,7 +10,9 @@
             "request": "launch",
             "program": "${workspaceFolder}/models/train/train_seq2seq.py",
             "args": ["--gpu", "--fast_epoch"],
-            "env":{"CUDA_VISIBLE_DEVICES":"6,7", "ALFRED_ROOT":"/home/vision/uykim/GitHub/moca/"},
+            "env":{
+                // "CUDA_VISIBLE_DEVICES":"6,7", 
+                "ALFRED_ROOT":"${workspaceFolder}"},
             "console": "integratedTerminal"
         },
 
@@ -24,7 +26,9 @@
                 "--fast_epoch",
                 "--num_threads=2",
             ],
-            "env":{"CUDA_VISIBLE_DEVICES":"6,7", "ALFRED_ROOT":"/home/vision/uykim/GitHub/moca/"},
+            "env":{
+                // "CUDA_VISIBLE_DEVICES":"6,7",
+                "ALFRED_ROOT":"${workspaceFolder}"},
             "console": "integratedTerminal"
         },
     ]

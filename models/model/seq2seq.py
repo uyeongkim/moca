@@ -63,6 +63,7 @@ class Module(nn.Module):
         valid_seen = splits['valid_seen']
         valid_unseen = splits['valid_unseen']
 
+        # not perfect list 제외
         train = [t for t in train if not t['task'] in not_perfect_list]
         valid_seen = [t for t in valid_seen if not t['task'] in not_perfect_list]
         valid_unseen = [t for t in valid_unseen if not t['task'] in not_perfect_list]

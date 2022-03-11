@@ -1,3 +1,4 @@
 /data
 /exp
 weight_maskrcnn.pt
+__pycache__
