@@ -1,0 +1,31 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "train",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/models/train/train_seq2seq.py",
+            "args": ["--gpu", "--fast_epoch"],
+            "env":{"CUDA_VISIBLE_DEVICES":"6,7", "ALFRED_ROOT":"/home/vision/uykim/GitHub/moca/"},
+            "console": "integratedTerminal"
+        },
+
+        {
+            "name": "eval",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/models/eval/eval_seq2seq.py",
+            "args": [
+                "--gpu", 
+                "--fast_epoch",
+                "--num_threads=2",
+            ],
+            "env":{"CUDA_VISIBLE_DEVICES":"6,7", "ALFRED_ROOT":"/home/vision/uykim/GitHub/moca/"},
+            "console": "integratedTerminal"
+        },
+    ]
+}
