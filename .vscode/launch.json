@@ -25,6 +25,7 @@
                 "--gpu", 
                 "--fast_epoch",
                 "--num_threads=2",
+                "--eval_split='valid_seen'"
             ],
             "env":{
                 // "CUDA_VISIBLE_DEVICES":"6,7",

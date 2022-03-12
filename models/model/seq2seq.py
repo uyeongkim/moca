@@ -50,6 +50,12 @@ class Module(nn.Module):
         # summary self.writer
         self.summary_writer = None
 
+    def available_task(self, file, dev):
+        return (file not in not_perfect_list 
+                and os.path.isdir(os.path.join(self.args.data, file))
+                and os.path.isdir(os.path.join(self.args.data, dev, file))
+                and len(os.listdir(os.path.join(self.args.data, dev, file)))!=0)
+
     def run_train(self, splits, args=None, optimizer=None):
         '''
         training loop
@@ -64,10 +70,11 @@ class Module(nn.Module):
         valid_unseen = splits['valid_unseen']
 
         # not perfect list 제외
-        train = [t for t in train if not t['task'] in not_perfect_list]
-        valid_seen = [t for t in valid_seen if not t['task'] in not_perfect_list]
-        valid_unseen = [t for t in valid_unseen if not t['task'] in not_perfect_list]
+        train = [t for t in train if self.available_task(t['task'], 'train')]
+        valid_seen = [t for t in valid_seen if self.available_task(t['task'], 'valid_seen')]
+        valid_unseen = [t for t in valid_unseen if self.available_task(t['task'], 'valid_unseen')]
 
+        # data augmentation-color swap위해 0, 1, 2 붙임
         train = [(s, False) for s in train] + [(s, 1) for s in train] + [(s, 2) for s in train]
         valid_seen = [(s, False) for s in valid_seen]
         valid_unseen = [(s, False) for s in valid_unseen]
