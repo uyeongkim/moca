@@ -146,7 +146,7 @@ class Module(Base):
                     im = torch.load(os.path.join(root, self.feat_pt))
                 else:
                     im = torch.load(os.path.join(root, 'feat_conv_colorSwap{}.pt'.format(swapColor)))
-                feat['frames'].append(im)
+                feat['frames'].append(im[:len(feat['action_low'][-1])])
 
         # tensorization and padding
         for k, v in feat.items():
