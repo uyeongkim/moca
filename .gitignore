@@ -2,3 +2,4 @@
 /exp
 weight_maskrcnn.pt
 __pycache__
+.vscode/settings.json
