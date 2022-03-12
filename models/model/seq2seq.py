@@ -54,7 +54,8 @@ class Module(nn.Module):
         return (file not in not_perfect_list 
                 and os.path.isdir(os.path.join(self.args.data, file))
                 and os.path.isdir(os.path.join(self.args.data, dev, file))
-                and len(os.listdir(os.path.join(self.args.data, dev, file)))!=0)
+                and ((dev == 'train' and len(os.listdir(os.path.join(self.args.data, dev, file)))==12)
+                     or (dev != 'train' and len(os.listdir(os.path.join(self.args.data, dev, file)))!=0)))
 
     def run_train(self, splits, args=None, optimizer=None):
         '''
@@ -103,6 +104,11 @@ class Module(nn.Module):
 
         # optimizer
         optimizer = optimizer or torch.optim.Adam(self.parameters(), lr=args.lr)
+
+        # print total dataset size
+        print("train set size: ", len(train))
+        print("valid_seen set size: ", len(valid_seen))
+        print("valid_unseen set size: ", len(valid_unseen))
 
         # display dout
         print("Saving to: %s" % self.args.dout)
