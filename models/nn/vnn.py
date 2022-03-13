@@ -290,10 +290,12 @@ class ConvFrameMaskDecoderProgressMonitor(nn.Module):
         lang_feat_t_instr = enc_instr # language is encoded once at the start
 
         # scaled dot product attention
+        # attn in Language Encoder
         weighted_lang_t_goal, lang_attn_t_goal = self.scale_dot_attn(lang_feat_t_goal, h_tm1_goal)
         weighted_lang_t_instr, lang_attn_t_instr = self.scale_dot_attn(lang_feat_t_instr, h_tm1_instr)
 
         # dynamic convolution
+        # dynamic filter 그 자체
         vis_feat_t_goal = self.dynamic_conv(frame, weighted_lang_t_goal)
         vis_feat_t_instr = self.dynamic_conv(frame, weighted_lang_t_instr)
 
@@ -305,21 +307,21 @@ class ConvFrameMaskDecoderProgressMonitor(nn.Module):
         inp_t_instr = torch.cat([vis_feat_t_instr, weighted_lang_t_instr, e_t], dim=1)
         inp_t_instr = self.input_dropout(inp_t_instr)
 
-        # update hidden state (goal decoder)
+        # update hidden state (goal decoder) used for both class and action decoder
         state_t_goal = self.cell_goal(inp_t_goal, state_tm1_goal)
         state_t_goal = [self.hstate_dropout(x) for x in state_t_goal]
         h_t_goal, _ = state_t_goal[0], state_t_goal[1]
         
-        # decode mask (goal decoder)
+        # decode mask (goal class decoder)
         cont_t_goal = h_t_goal #torch.cat([h_t_goal, inp_t_goal], dim=1)
         mask_t = self.mask_dec(cont_t_goal)
         
-        # update hidden state (instr decoder)
+        # update hidden state (instr decoder) used for both class and action decoder
         state_t_instr = self.cell_instr(inp_t_instr, state_tm1_instr)
         state_t_instr = [self.hstate_dropout(x) for x in state_t_instr]
         h_t_instr, _ = state_t_instr[0], state_t_instr[1]
 
-        # decode action (instr decoder)
+        # decode action (instr action decoder)
         cont_t_instr = torch.cat([h_t_instr, inp_t_instr], dim=1)
         action_emb_t = self.actor(self.actor_dropout(cont_t_instr))
         action_t = action_emb_t.mm(self.emb.weight.t())

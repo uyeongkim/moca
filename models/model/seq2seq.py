@@ -312,6 +312,7 @@ class Module(nn.Module):
     def iterate(self, data, batch_size):
         '''
         breaks dataset into batch_size chunks for training
+        return batch: batch chunk, feat: instruction feature
         '''
         for i in trange(0, len(data), batch_size, desc='batch'):
             tasks = data[i:i+batch_size]
